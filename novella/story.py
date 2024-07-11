@@ -12,12 +12,19 @@ class Story:
         self.author = author
         self.chapters = chapters
 
+    def __dict__(self) -> dict:
+        return {
+            "title": self.title,
+            "author": self.author,
+            "chapters": [chapter.__str__() for chapter in self.chapters],
+        }
+
 
 def create_new_story(title: str, author: str, path: Path = Path(".")):
-    story = Story(title, author, [Path("README.md")])
+    story = Story(title, author, [])
     file_path = path / "story.json"
     with file_path.open("w", encoding="utf-8") as json_file:
-        json.dump(vars(story), json_file, indent=4)
+        json.dump(story.__dict__(), json_file, indent=4)
 
 
 def load_story(story: Path) -> Story:
@@ -28,4 +35,3 @@ def load_story(story: Path) -> Story:
         author=data["author"],
         chapters=[Path(chapter) for chapter in data.get("chapters", [])],
     )
-
