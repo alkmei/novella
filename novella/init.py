@@ -2,7 +2,7 @@ import os
 import json
 
 
-def create_story(title, path, author=None):
+def create_story(title: str, path: str, author: str | None = None):
     if not os.path.exists:
         os.makedirs(path)
 
