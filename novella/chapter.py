@@ -2,7 +2,8 @@ import os
 from novella.metadata import load_metadata, save_metadata
 
 
-def create_chapter(title, story_path, metadata_path):
+def create_chapter(title, story_path):
+    metadata_path = os.path.join(story_path, "story.json")
     metadata = load_metadata(metadata_path)
 
     if "chapters" not in metadata:

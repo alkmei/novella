@@ -1,5 +1,5 @@
-from .story import create_new_story
-from pathlib import Path
+from .init import create_story
+from .chapter import create_chapter
 
-if __name__ == "__main__":
-    create_new_story("Hi", "HI", Path("."))
+create_story("Test", "/home/alvin/git/novella", "Alvin")
+create_chapter("ch1", "/home/alvin/git/novella")
