@@ -1,8 +1,10 @@
 import os
-from novella.metadata import load_metadata, save_metadata
+from pathlib import Path
+
+from .metadata import load_metadata, save_metadata
 
 
-def create_chapter(title: str, path: str):
+def create_chapter(title: str, path: Path):
     metadata_path = os.path.join(path, "story.json")
     metadata = load_metadata(metadata_path)
 
@@ -23,3 +25,10 @@ def create_chapter(title: str, path: str):
     save_metadata(metadata, metadata_path)
 
     print(f"Chapter '{title}' created at {chapter_path} and metadata updated.")
+
+
+def get_chapters(path: str):
+    metadata_path = os.path.join(path, "story.json")
+    metadata = load_metadata(metadata_path)
+
+    return metadata.chapters

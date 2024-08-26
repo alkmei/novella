@@ -1,13 +1,14 @@
 [tool.poetry]
 name = "novella"
-version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+version = "0.0.1a"
+description = "novella lets you manage stories"
+authors = ["Alvin Mei <alvinkmei@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
 pytest = "^8.2.2"
+typer = "^0.12.5"
 
 
 [build-system]
