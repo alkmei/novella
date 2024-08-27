@@ -27,8 +27,8 @@ def create_chapter(title: str, path: Path):
     print(f"Chapter '{title}' created at {chapter_path} and metadata updated.")
 
 
-def get_chapters(path: str):
+def get_chapters(path: Path):
     metadata_path = os.path.join(path, "story.json")
     metadata = load_metadata(metadata_path)
 
-    return metadata.chapters
+    return metadata["chapters"]

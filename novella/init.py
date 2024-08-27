@@ -4,6 +4,9 @@ from pathlib import Path
 
 
 def create_story(title: str, path: Path, author: str | None = None):
+    if Path(os.path.join(path, "story.json")).is_file():
+        raise FileExistsError()
+
     if not os.path.exists(path):
         os.makedirs(path)
 
