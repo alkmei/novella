@@ -2,7 +2,7 @@
  [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 > novella lets you manage stories
 
-Novella is a command-line tool that allows users to create and manage stories based on text files.
+Novella is a command-line tool that allows users to create and manage stories based on plaintext files.
 
 ## Usage
 

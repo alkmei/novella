@@ -11,7 +11,7 @@ def compile_story(path: Path):
     if "chapters" not in metadata or len(metadata["chapters"]) == 0:
         raise ValueError("No chapters found in metadata to compile.")
 
-    output_path = os.path.join(path, metadata["title"])
+    output_path = os.path.join(path, metadata["title"] + ".md")
 
     with open(output_path, "w") as output_file:
         for chapter in metadata["chapters"]:

@@ -12,9 +12,8 @@ from novella import (
     save_metadata,
 )
 
+
 # Helper functions for testing
-
-
 @pytest.fixture
 def mock_metadata():
     return {"title": "Test Story", "author": "Anonymous", "genres": [], "chapters": []}
@@ -101,7 +100,7 @@ def test_compile_story(temp_dir, mock_metadata):
 
     compile_story(temp_dir)
 
-    output_path = Path(os.path.join(temp_dir, "Test Story"))
+    output_path = Path(os.path.join(temp_dir, "Test Story.md"))
     assert output_path.is_file()
 
     with open(output_path, "r") as f:
