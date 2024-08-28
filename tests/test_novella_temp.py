@@ -8,9 +8,10 @@ from novella import (
     get_chapters,
     compile_story,
     create_story,
-    load_metadata,
-    save_metadata,
+    load_story,
+    save_story,
 )
+from novella.chapter import delete_chapter
 
 
 # Helper functions for testing
@@ -53,7 +54,7 @@ def test_create_story_existing_file(temp_dir):
 
 
 def test_create_chapter(temp_dir, mock_metadata):
-    save_metadata(mock_metadata, os.path.join(temp_dir, "story.json"))
+    save_story(mock_metadata, os.path.join(temp_dir, "story.json"))
 
     create_chapter("Chapter One", temp_dir)
 
@@ -69,7 +70,7 @@ def test_create_chapter(temp_dir, mock_metadata):
 
 
 def test_create_chapter_file_exists(temp_dir, mock_metadata):
-    save_metadata(mock_metadata, os.path.join(temp_dir, "story.json"))
+    save_story(mock_metadata, os.path.join(temp_dir, "story.json"))
     create_chapter("Chapter One", temp_dir)
 
     with pytest.raises(FileExistsError):
@@ -81,11 +82,27 @@ def test_create_chapter_file_exists(temp_dir, mock_metadata):
 
 def test_get_chapters(temp_dir, mock_metadata):
     mock_metadata["chapters"] = [{"title": "Chapter One", "filename": "chapter_one.md"}]
-    save_metadata(mock_metadata, os.path.join(temp_dir, "story.json"))
+    save_story(mock_metadata, os.path.join(temp_dir, "story.json"))
 
     chapters = get_chapters(temp_dir)
     assert len(chapters) == 1
     assert chapters[0]["title"] == "Chapter One"
+
+
+# Tests for delete_chapters
+
+
+def test_delete_chapter(temp_dir, mock_metadata):
+    mock_metadata["chapters"] = [
+        {"title": "Chapter One", "filename": "chapter_one.md"},
+        {"title": "Chapter Two", "filename": "chapter_two.md"},
+    ]
+    save_story(mock_metadata, os.path.join(temp_dir, "story.json"))
+
+    delete_chapter(0, temp_dir)
+    chapters = get_chapters(temp_dir)
+    assert len(chapters) == 1
+    assert chapters[0]["title"] == "Chapter Two"
 
 
 # Tests for compile_story
@@ -93,7 +110,7 @@ def test_get_chapters(temp_dir, mock_metadata):
 
 def test_compile_story(temp_dir, mock_metadata):
     mock_metadata["chapters"] = [{"title": "Chapter One", "filename": "chapter_one.md"}]
-    save_metadata(mock_metadata, os.path.join(temp_dir, "story.json"))
+    save_story(mock_metadata, os.path.join(temp_dir, "story.json"))
 
     with open(temp_dir / "chapter_one.md", "w") as f:
         f.write("# Chapter One\n\nContent of chapter one.")
@@ -110,7 +127,7 @@ def test_compile_story(temp_dir, mock_metadata):
 
 
 def test_compile_story_no_chapters(temp_dir):
-    save_metadata(
+    save_story(
         {"title": "Test Story", "chapters": []}, os.path.join(temp_dir, "story.json")
     )
 
@@ -122,7 +139,7 @@ def test_compile_story_missing_chapter(temp_dir, mock_metadata):
     mock_metadata["chapters"] = [
         {"title": "Chapter One", "filename": "missing_chapter.md"}
     ]
-    save_metadata(mock_metadata, os.path.join(temp_dir, "story.json"))
+    save_story(mock_metadata, os.path.join(temp_dir, "story.json"))
 
     with pytest.raises(FileNotFoundError):
         compile_story(temp_dir)

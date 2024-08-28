@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.12"
 pytest = "^8.2.2"
 typer = "^0.12.5"
+pydantic = "^2.8.2"
 
 
 [build-system]

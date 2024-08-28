@@ -1,23 +1,20 @@
 import os
 from pathlib import Path
 
-from .metadata import load_metadata
+from .story import load_story
 
 
 def compile_story(path: Path):
-    metadata_path = os.path.join(path, "story.json")
-    metadata = load_metadata(metadata_path)
+    story_path = os.path.join(path, "story.json")
+    story = load_story(story_path)
 
-    if "chapters" not in metadata or len(metadata["chapters"]) == 0:
+    if len(story.chapters) == 0:
         raise ValueError("No chapters found in metadata to compile.")
 
-    output_path = os.path.join(path, metadata["title"] + ".md")
+    output_path = os.path.join(path, story["title"] + ".md")
 
     with open(output_path, "w") as output_file:
-        for chapter in metadata["chapters"]:
-            chapter_filename = chapter.get("filename")
-            chapter_path = os.path.join(path, chapter_filename)
-
+        for chapter_path in story.chapters:
             if not os.path.exists(chapter_path):
                 raise FileNotFoundError(f"Chapter file not found: {chapter_path}")
 
