@@ -43,4 +43,4 @@ def test_story_anonymous(temp_dir):
     with open(story_path, "r") as f:
         story_json = json.load(f)
         story = Story(**story_json)
-        assert story["author"] == "Anonymous"
+        assert story.author == "Anonymous"

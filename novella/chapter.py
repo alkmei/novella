@@ -1,15 +1,14 @@
 import os
 from pathlib import Path
 
+import send2trash
+
 from .story import load_story, save_story
 
 
 def create_chapter(title: str, path: Path):
     story_path = os.path.join(path, "story.json")
     story = load_story(story_path)
-
-    if "chapters" not in story:
-        story["chapters"] = []
 
     chapter_filename = f"{title.replace(' ', '_').lower()}.md"
     chapter_path = os.path.join(path, chapter_filename)
@@ -46,7 +45,9 @@ def delete_chapter(number: int, path: Path):
     if len(story.chapters) < number:
         raise IndexError("Chapter number must be less than the number of chapters")
 
+    send2trash.send2trash(story.chapters[number - 1])
     story.chapters.pop(number - 1)
+
     save_story(story, story_path)
 
     print(f"Chapter '{number}' deleted.")
