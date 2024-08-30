@@ -13,7 +13,7 @@ def test_compile_story_success(tmp_path):
 
     # Save story.json
     with open(tmp_path / "story.json", "w") as f:
-        f.write(story.json())
+        f.write(story.model_dump_json())
 
     # Create chapter files
     with open(tmp_path / "chapter1.md", "w") as f:
