@@ -11,15 +11,17 @@ def create_chapter(title: str, path: Path):
     story = load_story(story_path)
 
     chapter_filename = f"{title.replace(' ', '_').lower()}.md"
-    chapter_path = os.path.join(path, chapter_filename)
+    chapter_path = os.path.join(path, "chapters", chapter_filename)
 
     if os.path.exists(chapter_path):
         raise FileExistsError(f"Chapter file already exists: {chapter_path}")
 
+    os.makedirs(path / "chapters", exist_ok=True)
+
     with open(chapter_path, "w") as chapter_file:
         chapter_file.write(f"# {title}\n\n")
 
-    story.chapters.append(Path(chapter_path))
+    story.chapters.append(Path(chapter_path).relative_to(path))
 
     save_story(story, story_path)
 
@@ -45,9 +47,9 @@ def delete_chapter(number: int, path: Path):
     if len(story.chapters) < number:
         raise IndexError("Chapter number must be less than the number of chapters")
 
-    send2trash.send2trash(story.chapters[number - 1])
+    send2trash.send2trash(path / story.chapters[number - 1])
     story.chapters.pop(number - 1)
 
     save_story(story, story_path)
 
-    print(f"Chapter '{number}' deleted.")
+    print(f"Chapter {number} deleted.")

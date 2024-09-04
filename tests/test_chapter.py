@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 import pytest
 import json
 from novella.chapter import create_chapter, get_chapters, delete_chapter
@@ -21,7 +24,7 @@ def test_create_chapter(temp_directory):
     create_chapter(title, path)
 
     # Assertions
-    chapter_path = path / "new_chapter.md"
+    chapter_path = path / "chapters" / "new_chapter.md"
     assert chapter_path.exists()
     with open(chapter_path, "r") as f:
         content = f.read()
@@ -31,7 +34,7 @@ def test_create_chapter(temp_directory):
     with open(path / "story.json", "r") as f:
         story = json.load(f)
     assert len(story["chapters"]) == 1
-    assert str(story["chapters"][0]) == str(chapter_path)
+    assert str(story["chapters"][0]) == str(chapter_path.relative_to(temp_directory))
 
 
 def test_get_chapters(temp_directory):
@@ -42,8 +45,8 @@ def test_get_chapters(temp_directory):
     chapters = get_chapters(path)
 
     assert len(chapters) == 2
-    assert chapters[0] == path / "first_chapter.md"
-    assert chapters[1] == path / "second_chapter.md"
+    assert chapters[0] == Path(os.path.join("chapters", "first_chapter.md"))
+    assert chapters[1] == Path(os.path.join("chapters", "second_chapter.md"))
 
 
 def test_delete_chapter(temp_directory):
@@ -54,14 +57,14 @@ def test_delete_chapter(temp_directory):
     delete_chapter(1, path)
 
     # Check the chapter file was deleted
-    first_chapter_path = path / "first_chapter.md"
+    first_chapter_path = Path("chapters", "first_chapter.md")
     assert not first_chapter_path.exists()
 
     # Check the story.json file
     with open(path / "story.json", "r") as f:
         story = json.load(f)
     assert len(story["chapters"]) == 1
-    assert str(story["chapters"][0]) == str(path / "second_chapter.md")
+    assert str(story["chapters"][0]) == os.path.join("chapters", "second_chapter.md")
 
 
 def test_delete_chapter_no_chapters(temp_directory):
