@@ -15,7 +15,8 @@ def compile_story(path: Path):
 
     with open(output_path, "w") as output_file:
         for chapter_path in story.chapters:
-            if not os.path.exists(chapter_path):
+            chapter_path = path / chapter_path
+            if not os.path.isfile(chapter_path):
                 raise FileNotFoundError(f"Chapter file not found: {chapter_path}")
 
             with open(chapter_path, "r") as chapter_file:
