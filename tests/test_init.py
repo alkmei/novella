@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-from novella import create_story
+from novella.init import create_story
 from novella.story import Story
 
 

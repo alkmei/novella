@@ -10,5 +10,9 @@ app.command(help="Compiles a story")(compile.compile)
 app.add_typer(chapter.app, name="chapter", help="Handles chapters")
 
 
-if __name__ == "__main__":
+def main():
     app()
+
+
+if __name__ == "__main__":
+    main()
